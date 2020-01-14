@@ -6,9 +6,12 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -17,19 +20,23 @@ import javafx.util.Duration;
  */
 public class App extends Application {
 
-    int ballCenterX = 0;
-    int ballCurrentSpeedX = 10;
-    int ballDirectionX = 1;
-    int ballCenterY = 0;
-    int ballCurrentSpeedY = 10;
-    int ballDirectionY = 1;
+    short ballCenterX = 0;
+    byte ballCurrentSpeedX = 10;
+    byte ballDirectionX = 1;
     
+    short ballCenterY = 0;
+    byte ballCurrentSpeedY = 10;
+    byte ballDirectionY = 1;
+            
     @Override
     public void start(Stage stage) {
         
+        final short SCENE_HEIGHT = 180;
+        final short SCENE_WIDTH = 640;
+        
 //        StackPane root = new StackPane();
         Pane root = new Pane();
-        var scene = new Scene(root, 640, 480);
+        var scene = new Scene(root, SCENE_WIDTH, SCENE_HEIGHT);
         scene.setFill(Color.BLACK);
         stage.setScene(scene);
         stage.show();
@@ -45,6 +52,29 @@ public class App extends Application {
         //Circle circleBall = new Circle(10, 30, 7);
         
         root.getChildren().add(circleBall);
+        
+        short rectHeight = 50;        
+        Rectangle rectStick = new Rectangle();
+        rectStick.setWidth(10);
+        rectStick.setHeight(rectHeight);
+        rectStick.setX(SCENE_WIDTH - 40);
+        rectStick.setY((SCENE_HEIGHT-rectHeight)/2);
+        rectStick.setFill(Color.WHITE);
+        
+        root.getChildren().add(rectStick);
+        
+        scene.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            public void handle(final KeyEvent keyEvent) {
+                switch(keyEvent.getCode()) {
+                    case UP:
+                        System.out.println("Parriba");
+                        break;
+                    case DOWN:
+                        System.out.println("Pabajo");
+                        break;
+                }                
+            }
+        });
         
         Timeline timeline = new Timeline(
             // 0.017 ~= 60 FPS
