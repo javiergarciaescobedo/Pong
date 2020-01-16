@@ -6,12 +6,12 @@ import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -24,11 +24,11 @@ public class App extends Application {
     final short SCENE_WIDTH = 640;
 
     short ballCenterX = 0;
-    byte ballCurrentSpeedX = 10;
+    byte ballCurrentSpeedX = 3;
     byte ballDirectionX = 1;
     
     short ballCenterY = 0;
-    byte ballCurrentSpeedY = 10;
+    byte ballCurrentSpeedY = 3;
     byte ballDirectionY = 1;
        
     short stickHeight = 50;        
@@ -54,7 +54,7 @@ public class App extends Application {
         circleBall.setCenterY(30);
         circleBall.setRadius(7);  
         circleBall.setFill(Color.WHITE);
-        
+                
         //Circle circleBall = new Circle(10, 30, 7);
         
         root.getChildren().add(circleBall);
@@ -118,6 +118,13 @@ public class App extends Application {
                     } else if (stickPosY >= SCENE_HEIGHT-stickHeight) {
                         stickDirection = 0;
                         stickPosY = (short)(SCENE_HEIGHT-stickHeight);
+                    }
+                    
+                    Shape shapeCollision = Shape.intersect(circleBall, rectStick);
+                    boolean colisionVacia = shapeCollision.getBoundsInLocal().isEmpty();
+                    if(colisionVacia == false) {
+                        System.out.println("Ha colisionado");
+                        ballDirectionX = -1;
                     }
                 }
             })                
